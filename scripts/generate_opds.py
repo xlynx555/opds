@@ -3,6 +3,7 @@ import io
 import tempfile
 import zipfile
 from datetime import datetime
+from urllib.parse import quote
 import epub_meta
 from xml.etree import ElementTree as ET
 from xml.etree.ElementTree import Element, SubElement, tostring
@@ -181,6 +182,8 @@ def _extract_book_metadata(path, extension):
 
 def _add_book_entry(feed, filename, metadata, mime_type):
     normalized_metadata = _normalize_metadata(metadata, filename)
+    # Encode file names for safe HTTP links (spaces, Unicode, punctuation, etc.).
+    encoded_filename = quote(filename, safe="")
     entry = SubElement(feed, "entry")
     SubElement(entry, "title").text = normalized_metadata["title"]
     author = SubElement(entry, "author")
@@ -191,7 +194,7 @@ def _add_book_entry(feed, filename, metadata, mime_type):
     # Link to the actual file for download.
     SubElement(entry, "link", {
         "rel": "http://opds-spec.org/acquisition",
-        "href": f"{BASE_URL}/books/{filename}",
+        "href": f"{BASE_URL}/books/{encoded_filename}",
         "type": mime_type,
     })
 
