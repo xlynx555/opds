@@ -8,7 +8,7 @@ from xml.etree import ElementTree as ET
 from xml.etree.ElementTree import Element, SubElement, tostring
 
 # CONFIGURATION
-BASE_URL = "https://github.com/xlynx555/opds"
+BASE_URL = "https://xlynx555.github.io/opds"
 BOOKS_DIR = "books"
 OUTPUT_FILE = "index.xml"
 
